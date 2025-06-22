@@ -1,4 +1,6 @@
-## STGas
+## STGas：Infrared Video Gas Leakage Detection Based on Spatio-temporal Feature Fusion
+
+The results of simple scene detection are shown in simple.avi, while the results of weak scene detection are shown in difficult.avi.
 
 ### Step
 1. Setup STGas
