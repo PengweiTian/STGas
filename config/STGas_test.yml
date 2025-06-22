@@ -1,0 +1,124 @@
+save_dir: experiment/STGas_test
+seed: 317
+model:
+  arch:
+    name: OneStageDetector
+    backbone:
+      name: STGas
+      temporal: CTDFF
+      out_stages: [ 2,3,4 ]
+      stage_out_channels: [ 24, 48, 72, 96, 120 ]
+      stage_repeats: [ 2,4,3 ]
+      repViTGas_use_se: [ [ 1,0 ],[ 1,0,1,0 ],[ 1,0,1 ] ]
+      frame_seg: 8
+      activation: Hardswish
+    fpn:
+      name: GhostPAN
+      in_channels: [ 72, 96, 120 ]
+      out_channels: 96
+      kernel_size: 5
+      num_extra_level: 1
+      use_depthwise: True
+      activation: LeakyReLU
+    head:
+      name: NanoDetPlusHead
+      num_classes: 1
+      input_channel: 96
+      feat_channels: 96
+      stacked_convs: 2
+      kernel_size: 5
+      strides: [ 16, 32, 64, 128 ]
+      activation: LeakyReLU
+      reg_max: 7
+      norm_cfg:
+        type: BN
+      loss:
+        loss_qfl:
+          name: QualityFocalLoss
+          use_sigmoid: True
+          beta: 2.0
+          loss_weight: 1.0
+        loss_dfl:
+          name: DistributionFocalLoss
+          loss_weight: 0.25
+        loss_bbox:
+          name: GIoULoss
+          loss_weight: 2.0
+data:
+  train:
+    name: IODVideo
+    img_path: D:/tpw/tpw_graduate/dataset/IOD-Video/Frames
+    ann_path: ./data/IODVideo/good_train.json
+    coco_ann_path: ./data/IODVideo/good_train_coco.json
+    valid_coco_ann_path: ./data/IODVideo/valid_coco_eval.json
+    input_size: [ 256,256 ] #[w,h]
+    frame_seg: 8  # 连续输入帧数
+    down_ratio: 32
+    model: CTDFF
+    pipeline:
+      transform:
+        perspective: 0.0
+        scale: [ 0.6, 1.4 ]
+        stretch: [ [ 0.8, 1.2 ], [ 0.8, 1.2 ] ]
+        rotation: 0
+        shear: 0
+        translate: 0.2
+        flip: 0.5
+      color:
+        brightness: 32
+        contrast: [ 0.5, 1.5 ]
+        hue: 18
+        saturation: [ 0.5, 1.5 ]
+        normalize: [ [ 0.46522263,0.46622083,0.46406102 ], [ 0.28900176,0.28910482,0.2889146 ] ]
+  val:
+    name: IODVideo
+    img_path: D:/tpw/tpw_graduate/dataset/IOD-Video/Frames
+    ann_path: ./data/IODVideo/good_valid.json
+    coco_ann_path: ./data/IODVideo/good_valid_coco.json
+    valid_coco_ann_path: ./data/IODVideo/valid_coco_eval.json
+    input_size: [ 256,256 ] #[w,h]
+    frame_seg: 8
+    down_ratio: 32
+    model: CTDFF
+    pipeline:
+      transform:
+        perspective: 0.0
+        scale: [ 0.6, 1.4 ]
+        stretch: [ [ 0.8, 1.2 ], [ 0.8, 1.2 ] ]
+        rotation: 0
+        shear: 0
+        translate: 0.2
+        flip: 0.5
+      color:
+        brightness: 32
+        contrast: [ 0.5, 1.5 ]
+        hue: 18
+        saturation: [ 0.5, 1.5 ]
+        normalize: [ [ 0.46522263,0.46622083,0.46406102 ], [ 0.28900176,0.28910482,0.2889146 ] ]
+device:
+  gpu_ids: [ 0 ]
+  workers_per_gpu: 0
+  batchsize_per_gpu: 4
+schedule:
+  optimizer:
+    name: AdamW
+    lr: 0.001
+    weight_decay: 0.05
+  warmup:
+    name: linear
+    steps: 100
+    ratio: 0.0001
+  total_epochs: 30
+  lr_schedule:
+    name: CosineAnnealingLR
+    T_max: 30
+    eta_min: 0.00001
+  val_intervals: 1
+evaluator:
+  name: DetectionEvaluator
+  save_key: AP10_95
+
+log:
+  interval: 10
+
+class_names: [ 'gas' ]

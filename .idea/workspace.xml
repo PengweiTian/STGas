@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="da7325d6-d95a-4249-999c-51e91ff04d41" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/STGas.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/dataset/IODVideoDataset.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/dataset/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/dataset/collate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/dataset/data_process/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/dataset/data_process/box_sample.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/dataset/data_process/color.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/dataset/data_process/pipeline.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/dataset/data_process/transform.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/evaluator/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/evaluator/detection.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/arch/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/arch/one_stage_detector.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/backbone/STGas.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/backbone/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/backbone/temporal/CTDFF.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/backbone/temporal/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/fpn/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/fpn/ghost_pan.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/head/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/head/assigner/assign_result.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/head/assigner/atss_assigner.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/head/assigner/base_assigner.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/head/assigner/dsl_assigner.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/head/gfl_head.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/head/nanodet_head.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/head/nanodet_plus_head.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/loss/gfocal_loss.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/loss/iou_loss.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/loss/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/activation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/cbam.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/conv.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/drop_block.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/dynamic_conv.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/init_weights.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/nms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/norm.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/model/module/scale.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/optim/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/optim/builder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/trainer/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/trainer/task.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/box_transform.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/check_point.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/diff.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/logger.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/misc.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/progress_bar.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/rank_filter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/scatter_gather.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/show_imgs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/util_mixins.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/visualization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/STGas/util/yacs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/STGas_inference.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/STGas_test.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/STGas_train.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/IODVideo/train.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/IODVideo/train_coco.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/IODVideo/valid.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/IODVideo/valid_coco.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/IODVideo/valid_coco_eval.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/difficult.avi" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simple.avi" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task/inference.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task/train.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="2yr2f8ZnTZVs9u15WZPKu9SllRi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "E:/tpw_workspace/tpw_graduate/实验/STGas",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="da7325d6-d95a-4249-999c-51e91ff04d41" name="Changes" comment="" />
+      <created>1750578471760</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750578471760</updated>
+      <workItem from="1750578472878" duration="322000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
