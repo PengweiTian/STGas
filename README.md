@@ -2,8 +2,10 @@
 
 The results of simple scene detection are shown in simple.avi, while the results of weak scene detection are shown in difficult.avi.
 
+### Data
+Access to [IOD-Video](https://github.com/CalayZhou/IOD-Video)  is required to get data.
+
 ### Step
-1. Setup STGas
 ```shell script
 python setup.py develop
 ```
