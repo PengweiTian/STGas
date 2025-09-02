@@ -7,7 +7,7 @@ import torch.distributed as dist
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src_gas.util import (
+from ..util import (
     bbox2distance,
     distance2bbox,
     images_to_levels,
@@ -15,7 +15,6 @@ from src_gas.util import (
     overlay_bbox_cv,
 )
 
-from ...dataset.data_process.transform import warp_boxes
 from ..loss.gfocal_loss import DistributionFocalLoss, QualityFocalLoss
 from ..loss.iou_loss import GIoULoss, bbox_overlaps
 from ..module.conv import ConvModule

@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from src_gas.util import bbox2distance, distance2bbox, multi_apply, overlay_bbox_cv
+from ..util import bbox2distance, distance2bbox, multi_apply, overlay_bbox_cv
 
 from ...dataset.data_process.transform import warp_boxes
 from ..loss.gfocal_loss import DistributionFocalLoss, QualityFocalLoss

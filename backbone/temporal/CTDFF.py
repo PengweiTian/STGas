@@ -4,6 +4,56 @@ import torch.nn.functional as F
 from einops import rearrange
 
 
+class GasConv(nn.Module):
+    def __init__(self, input_channels, output_channels):
+        super(GasConv, self).__init__()
+
+        self.conv_module = nn.Sequential(
+            # pw
+            nn.Conv2d(input_channels, input_channels * 3, 1, 1, 0, bias=False),
+            nn.BatchNorm2d(input_channels * 3),
+            nn.ReLU(inplace=True),
+            # dw
+            nn.Conv2d(input_channels * 3, input_channels * 3, 3, 1, 1, groups=input_channels * 3, bias=False),
+            nn.BatchNorm2d(input_channels * 3),
+            nn.Hardswish(inplace=True),
+            CCA(input_channels * 3, 3),
+            # pw-linear
+            nn.Conv2d(input_channels * 3, output_channels, 1, 1, 0, bias=False),
+            nn.BatchNorm2d(output_channels),
+        )
+
+    def forward(self, x):
+        x = self.conv_module(x)
+        return x
+
+
+class CCA(nn.Module):
+    def __init__(self, input_channel, split_num):
+        super(CCA, self).__init__()
+        self.split_num = split_num
+        split_channel = input_channel // split_num
+
+        self.Conv_list = nn.ModuleList(
+            nn.Conv2d(split_channel, split_channel, 3, 1, 1, 1, groups=split_channel)
+            for _ in range(self.split_num)
+        )
+
+    def forward(self, x):
+        split_size = [x.shape[1] // self.split_num for _ in range(self.split_num)]
+        split_xs = torch.split(x, split_size, dim=1)
+        x_channels = [self.Conv_list[0](split_xs[0])]
+
+        if self.split_num > 1:
+            pre_x = x_channels[0]
+            for item, Conv in zip(split_xs[1:], self.Conv_list[1:]):
+                item_x = Conv(item + pre_x)
+                x_channels.append(item_x)
+                pre_x = item_x
+
+        return torch.cat(x_channels, dim=1)
+
+
 # output: 3->24
 class CTDFF(nn.Module):
 
@@ -38,6 +88,19 @@ class CTDFF(nn.Module):
             nn.ReLU(inplace=True)
         )
 
+        # self.gasConv1 = nn.Sequential(
+        #     nn.Conv2d(24, 24, 3, 1, 1, bias=False),
+        #     nn.BatchNorm2d(24),
+        #     nn.ReLU(inplace=True)
+        # )
+        # self.gasConv2 = nn.Sequential(
+        #     nn.Conv2d(24, 24, 3, 1, 1, bias=False),
+        #     nn.BatchNorm2d(24),
+        #     nn.ReLU(inplace=True)
+        # )
+        self.gasConv1 = GasConv(24, 48)
+        self.gasConv2 = GasConv(24, 48)
+
         self.init_weights()
 
     def init_weights(self):
@@ -64,9 +127,15 @@ class CTDFF(nn.Module):
             t_diff = t_diff_flat.view(t_diff.size()[0], -1, t_diff.size()[2], t_diff.size()[3])  # B,24,32,32
             t_diff = self.conv3(t_diff)
 
-            # 融合
+            # 融合1
             t_key = self.conv2(t1)  # B,24,128,128
             t_key = self.maxpool(t_key)  # B,24,64,64
+            temp_diff = F.interpolate(t_diff, t_key.size()[2:])
+            t_key = 0.5 * t_key + 0.5 * temp_diff
+
+            # 融合2
+            t_diff = self.gasConv1(t_diff)  # B,24,32,32
+            t_key = self.gasConv2(t_key)  # B,24,64,64
             temp_diff = F.interpolate(t_diff, t_key.size()[2:])
             t_key = 0.5 * t_key + 0.5 * temp_diff
 
@@ -133,3 +202,24 @@ class AISA(nn.Module):
 
         out = self.fc_out(out)
         return out
+
+
+if __name__ == '__main__':
+    """
+        I(t-1),I(t),I(t+1),seg=k
+        检测帧：[f1,f2,f3,...,fk]
+        I(t-1)=[f0,f1,f2,f3,...,fk-1] 
+        I(t)=[f1,f2,f3,...,fk]
+        I(t+1)=[f2,f3,...,fk,fk+1]
+        当有t个时间维度序列时,需要在额外加t-1个序列，即每个时间维度片段，开头和结尾各加(t-1)/2
+        input: (B*T) C H W
+    """
+    bs = 4
+    segment = 8
+    extra_count = 2
+    total_frames = segment + extra_count
+    input_tensor = [torch.randn(bs, 3, 256, 256) for _ in range(total_frames)]
+
+    model = CTDFF(segment)
+    res = model(input_tensor)
+    print(res.shape)

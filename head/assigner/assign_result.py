@@ -15,7 +15,7 @@
 
 import torch
 
-from src_gas.util import util_mixins
+from ...util import util_mixins
 
 
 class AssignResult(util_mixins.NiceRepr):

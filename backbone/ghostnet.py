@@ -15,7 +15,7 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from src_gas.model.backbone.temporal import build_temporal_backbone
+from .temporal import build_temporal_backbone
 
 from ..module.activation import act_layers
 

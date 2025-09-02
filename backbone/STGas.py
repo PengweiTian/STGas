@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch
 import warnings
 
-from src_gas.model.backbone.temporal import build_temporal_backbone
+from .temporal import build_temporal_backbone
 
 
 class GasConv(nn.Module):
@@ -257,7 +257,8 @@ class STGas(nn.Module):
         use_se = [[bool(x) for x in sublist] for sublist in repViTGas_use_se]
         use_ge = [[bool(x) for x in sublist] for sublist in repViTGas_use_ge]
 
-        self.gasConv = GasConv(self.stage_out_channels[0], self.stage_out_channels[1])
+        # self.gasConv_0 = nn.Identity()
+        # self.gasConv_1 = GasConv(self.stage_out_channels[0], self.stage_out_channels[1])
 
         # 空间Backbone
         self.stage_modules = []
@@ -285,9 +286,22 @@ class STGas(nn.Module):
 
     def forward(self, x):
         x = self.temporal(x)
-        x = self.gasConv(x)
+        # x = self.gasConv_0(x)
+        # x = self.gasConv_1(x)
         output = []
         for stage in self.stage_modules:
             x = stage(x)
             output.append(x)
         return tuple(output)
+
+
+if __name__ == '__main__':
+    bs = 4
+    segment = 8
+    extra_count = 2
+    total_frames = segment + extra_count
+    input_tensor = [torch.randn(bs, 3, 256, 256) for _ in range(total_frames)]
+
+    temp = STGas([2, 3, 4], "CTDFF", [2, 4, 3], [24, 48, 72, 96, 120], 8,
+                 repViTGas_use_se=[[1, 0], [1, 0, 1, 0], [0, 1, 0]], repViTGas_use_ge=[[0, 0], [0, 1, 0, 1], [0, 1, 0]])
+    res = temp(input_tensor)
