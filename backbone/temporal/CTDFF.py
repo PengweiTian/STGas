@@ -7,7 +7,7 @@ from einops import rearrange
 # output: 3->24
 class CTDFF(nn.Module):
 
-    def __init__(self, frame_seg, patch_size=16, image_size=256, embed_dim=768):
+    def __init__(self, frame_seg, patch_size=16, image_size=256, embed_dim=64):
         super(CTDFF, self).__init__()
         output_channel = 24
         self.frame_seg = frame_seg
