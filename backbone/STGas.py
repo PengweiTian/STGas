@@ -5,6 +5,29 @@ import warnings
 from .temporal import build_temporal_backbone
 
 
+class GasConv_1(nn.Module):
+    def __init__(self, input_channels, output_channels):
+        super(GasConv_1, self).__init__()
+
+        self.conv_module = nn.Sequential(
+            # pw
+            nn.Conv2d(input_channels, input_channels * 3, 1, 1, 0, bias=False),
+            nn.BatchNorm2d(input_channels * 3),
+            nn.ReLU(inplace=True),
+            # dw
+            nn.Conv2d(input_channels * 3, input_channels * 3, 3, 1, 1, groups=input_channels * 3, bias=False),
+            nn.BatchNorm2d(input_channels * 3),
+            nn.Hardswish(inplace=True),
+            CCA(input_channels * 3, 3),
+            # pw-linear
+            nn.Conv2d(input_channels * 3, output_channels, 1, 1, 0, bias=False),
+            nn.BatchNorm2d(output_channels),
+        )
+
+    def forward(self, x):
+        x = self.conv_module(x)
+        return x
+
 class GasConv(nn.Module):
     def __init__(self, input_channels, output_channels):
         super(GasConv, self).__init__()
@@ -36,7 +59,15 @@ class CCA(nn.Module):
         split_channel = input_channel // split_num
 
         self.Conv_list = nn.ModuleList(
-            nn.Conv2d(split_channel, split_channel, 3, 1, 1, 1, groups=split_channel)
+            nn.Sequential(
+                # dw
+                nn.Conv2d(split_channel, split_channel, 3, 1, 1, 1, groups=split_channel, bias=False),
+                nn.BatchNorm2d(split_channel),
+                nn.ReLU(inplace=True),
+                # pw
+                nn.Conv2d(split_channel, split_channel, 1, 1, 0, groups=split_channel, bias=False),
+                nn.BatchNorm2d(split_channel),
+            )
             for _ in range(self.split_num)
         )
 
@@ -257,8 +288,7 @@ class STGas(nn.Module):
         use_se = [[bool(x) for x in sublist] for sublist in repViTGas_use_se]
         use_ge = [[bool(x) for x in sublist] for sublist in repViTGas_use_ge]
 
-        # self.gasConv_0 = nn.Identity()
-        # self.gasConv_1 = GasConv(self.stage_out_channels[0], self.stage_out_channels[1])
+        self.gasConv = GasConv_1(self.stage_out_channels[0], self.stage_out_channels[1])
 
         # 空间Backbone
         self.stage_modules = []
@@ -286,8 +316,7 @@ class STGas(nn.Module):
 
     def forward(self, x):
         x = self.temporal(x)
-        # x = self.gasConv_0(x)
-        # x = self.gasConv_1(x)
+        x = self.gasConv(x)
         output = []
         for stage in self.stage_modules:
             x = stage(x)
